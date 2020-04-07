@@ -44,7 +44,7 @@ class NoteRecycleAdapter(private val context: Context, private val notes: List<N
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textPriority = itemView.findViewById<TextView?>(R.id.textPriority)
         val textTitle = itemView.findViewById<TextView?>(R.id.textTitle)
-        val imageView = itemView.findViewById<ImageView>(R.id.imageView)
+        val imageView = itemView.findViewById<ImageView>(R.id.imageView_note_list_item)
         var notePosition = 0
         init{
             itemView.setOnClickListener{

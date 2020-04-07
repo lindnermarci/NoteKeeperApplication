@@ -8,6 +8,8 @@
     tools:context=".NoteActivity"
     tools:showIn="@layout/activity_main">
 
+
+
     <Spinner
         android:id="@+id/spinnerPriorities"
         android:layout_width="0dp"
@@ -45,4 +47,24 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/spinnerPriorities"
         app:layout_constraintTop_toBottomOf="@+id/textNoteTitle" />
+
+    <Button
+        android:id="@+id/button_add_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/add_image"
+        app:layout_constraintEnd_toEndOf="@+id/spinnerPriorities"
+        app:layout_constraintStart_toStartOf="@+id/spinnerPriorities"
+        app:layout_constraintTop_toBottomOf="@+id/textNoteText" />
+
+    <ImageView
+        android:id="@+id/imageView_note"
+        android:layout_width="346dp"
+        android:layout_height="226dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/textNoteText"
+        app:layout_constraintStart_toStartOf="@+id/textNoteText"
+        app:layout_constraintTop_toBottomOf="@+id/button_add_image"
+        app:srcCompat="@android:color/background_light" />
 </androidx.constraintlayout.widget.ConstraintLayout>

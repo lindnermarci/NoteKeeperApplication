@@ -17,8 +17,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/imageView_note_list_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -40,7 +41,7 @@
                 android:text="TextView"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintStart_toEndOf="@+id/imageView_note"
                 app:layout_constraintTop_toBottomOf="@+id/textPriority" />
 
             <TextView
@@ -55,9 +56,11 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 app:layout_constraintBottom_toTopOf="@+id/textTitle"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/imageView_note"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.cardview.widget.CardView>
 </FrameLayout>

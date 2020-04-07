@@ -1,17 +1,30 @@
 package com.example.notekeeper
 
-import android.app.SearchManager
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ArrayAdapter
-import android.widget.SearchView
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import android.app.Activity
+import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
+import android.graphics.BitmapFactory
+import android.graphics.Bitmap
+import java.net.URL
+import androidx.core.app.ComponentActivity
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.os.AsyncTask
+import java.io.FileInputStream
+
+
+
+
 
 class NoteActivity : AppCompatActivity() {
     private var notePosition = POSITION_NOT_SET
@@ -42,12 +55,31 @@ class NoteActivity : AppCompatActivity() {
             notePosition = DataManager.originalNotes.lastIndex
             originalNoteIndex = DataManager.originalNotes.lastIndex
         }
+
+        button_add_image.setOnClickListener { view ->
+            val intent = Intent()
+            intent.type = "image/*"
+            intent.action = Intent.ACTION_GET_CONTENT
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_IMAGE)
+        }
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == Activity.RESULT_OK && requestCode == SELECT_IMAGE){
+            imageView_note.setImageURI(data?.data) // handle chosen image
+            var bitmap = (imageView_note.drawable as BitmapDrawable).bitmap
+            saveNote(data?.data)
+        }
     }
 
     private fun displayNote() {
         val note = DataManager.notes[notePosition]
         textNoteTitle.setText(note.title)
         textNoteText.setText(note.text)
+        if(note.imageUri == null){
+            imageView_note.setImageURI(note.imageUri)
+        }
 
         val coursePosition = DataManager.prirityOptions.indexOf(note.priority);
         spinnerPriorities.setSelection(coursePosition)
@@ -101,20 +133,27 @@ class NoteActivity : AppCompatActivity() {
         saveNote()
     }
 
-    private fun saveNote() {
+    private fun saveNote(imageUri: Uri? = null) {
         if(originalNoteIndex == -1){
             val note = DataManager.notes[notePosition]
             note.title = textNoteTitle.text.toString()
             note.text = textNoteText.text.toString()
             note.priority = spinnerPriorities.selectedItem as Priority
+            if(imageUri != null){
+                note.imageUri = imageUri
+            }
         }else{
             val note = DataManager.originalNotes[originalNoteIndex]
             note.title = textNoteTitle.text.toString()
             note.text = textNoteText.text.toString()
             note.priority = spinnerPriorities.selectedItem as Priority
             DataManager.notes.add(note)
+            if(imageUri != null){
+                note.imageUri = imageUri
+            }
         }
 
     }
 
 }
+
