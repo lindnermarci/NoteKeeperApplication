@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import kotlinx.android.synthetic.main.activity_note_list.*
 import kotlinx.android.synthetic.main.content_note_list.*
+import kotlinx.android.synthetic.main.item_note_list.*
 
 class NoteListActivity : AppCompatActivity() {
 

@@ -11,19 +11,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import android.app.Activity
 import android.graphics.drawable.BitmapDrawable
-import android.net.Uri
-import android.graphics.BitmapFactory
 import android.graphics.Bitmap
-import java.net.URL
-import androidx.core.app.ComponentActivity
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import android.os.AsyncTask
-import java.io.FileInputStream
-
-
-
+import android.provider.ContactsContract
+import kotlin.random.Random
 
 
 class NoteActivity : AppCompatActivity() {
@@ -63,13 +53,34 @@ class NoteActivity : AppCompatActivity() {
             startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_IMAGE)
         }
 
+        button_remove.setOnClickListener { view ->
+            DataManager.notes[notePosition].id?.let { removeNode(it) }
+            val activityIntent = Intent(this, NoteListActivity::class.java)
+            startActivity(activityIntent)
+        }
+
+
+
+    }
+
+    private fun removeNode(id: Int) {
+        for(node in DataManager.notes){
+            if(node.id == id){
+                DataManager.notes.removeAt(DataManager.notes.indexOf(node))
+            }
+        }
+        for(node in DataManager.originalNotes){
+            if(node.id == id){
+                DataManager.notes.removeAt(DataManager.notes.indexOf(node))
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK && requestCode == SELECT_IMAGE){
             imageView_note.setImageURI(data?.data) // handle chosen image
             var bitmap = (imageView_note.drawable as BitmapDrawable).bitmap
-            saveNote(data?.data)
+            saveNote(bitmap)
         }
     }
 
@@ -77,8 +88,8 @@ class NoteActivity : AppCompatActivity() {
         val note = DataManager.notes[notePosition]
         textNoteTitle.setText(note.title)
         textNoteText.setText(note.text)
-        if(note.imageUri == null){
-            imageView_note.setImageURI(note.imageUri)
+        if(note.image != null){
+            imageView_note.setImageBitmap(note.image)
         }
 
         val coursePosition = DataManager.prirityOptions.indexOf(note.priority);
@@ -128,28 +139,36 @@ class NoteActivity : AppCompatActivity() {
         return super.onPrepareOptionsMenu(menu)
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onDestroy() {
+        super.onDestroy()
         saveNote()
     }
 
-    private fun saveNote(imageUri: Uri? = null) {
-        if(originalNoteIndex == -1){
+    private fun saveNote(image: Bitmap? = null) {
+        if(originalNoteIndex == -1){ //modositas
             val note = DataManager.notes[notePosition]
             note.title = textNoteTitle.text.toString()
             note.text = textNoteText.text.toString()
             note.priority = spinnerPriorities.selectedItem as Priority
-            if(imageUri != null){
-                note.imageUri = imageUri
+            if(image != null){
+                note.image = image
             }
-        }else{
+        }else{ //uj elem hozzadas
             val note = DataManager.originalNotes[originalNoteIndex]
+            val id = Random.nextInt(1, Int.MAX_VALUE)
+            note.id = id
             note.title = textNoteTitle.text.toString()
             note.text = textNoteText.text.toString()
             note.priority = spinnerPriorities.selectedItem as Priority
+
+            var exists = false
+            for (n in DataManager.notes){
+                if(note.id == n.id) exists = true
+            }
+            if(!exists)
             DataManager.notes.add(note)
-            if(imageUri != null){
-                note.imageUri = imageUri
+            if(image != null){
+                note.image = image
             }
         }
 
