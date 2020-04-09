@@ -12,7 +12,6 @@ import kotlinx.android.synthetic.main.content_main.*
 import android.app.Activity
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.Bitmap
-import android.provider.ContactsContract
 import kotlin.random.Random
 
 
@@ -29,7 +28,7 @@ class NoteActivity : AppCompatActivity() {
 
         val adapterCourses = ArrayAdapter<Priority>(this,
             android.R.layout.simple_spinner_item,
-            DataManager.prirityOptions)
+            DataManager.priorityOptions)
         adapterCourses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
         spinnerPriorities.adapter = adapterCourses
@@ -52,28 +51,6 @@ class NoteActivity : AppCompatActivity() {
             intent.action = Intent.ACTION_GET_CONTENT
             startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_IMAGE)
         }
-
-        button_remove.setOnClickListener { view ->
-            DataManager.notes[notePosition].id?.let { removeNode(it) }
-            val activityIntent = Intent(this, NoteListActivity::class.java)
-            startActivity(activityIntent)
-        }
-
-
-
-    }
-
-    private fun removeNode(id: Int) {
-        for(node in DataManager.notes){
-            if(node.id == id){
-                DataManager.notes.removeAt(DataManager.notes.indexOf(node))
-            }
-        }
-        for(node in DataManager.originalNotes){
-            if(node.id == id){
-                DataManager.notes.removeAt(DataManager.notes.indexOf(node))
-            }
-        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -92,7 +69,8 @@ class NoteActivity : AppCompatActivity() {
             imageView_note.setImageBitmap(note.image)
         }
 
-        val coursePosition = DataManager.prirityOptions.indexOf(note.priority);
+
+        val coursePosition = DataManager.priorityOptions.indexOf(note.priority);
         spinnerPriorities.setSelection(coursePosition)
     }
 
@@ -165,8 +143,9 @@ class NoteActivity : AppCompatActivity() {
             for (n in DataManager.notes){
                 if(note.id == n.id) exists = true
             }
-            if(!exists)
-            DataManager.notes.add(note)
+            if(!exists){
+                DataManager.notes.add(note)
+            }
             if(image != null){
                 note.image = image
             }

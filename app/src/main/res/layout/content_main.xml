@@ -29,7 +29,7 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:gravity="start|top"
-        android:hint="Note  title"
+        android:hint="@string/note_title"
         android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="@+id/spinnerPriorities"
         app:layout_constraintStart_toStartOf="@+id/spinnerPriorities"
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:gravity="start|top"
-        android:hint="Note text"
+        android:hint="@string/note_text"
         android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="@+id/spinnerPriorities"
         app:layout_constraintHorizontal_bias="1.0"
@@ -68,13 +68,4 @@
         app:layout_constraintTop_toBottomOf="@+id/button_add_image"
         app:srcCompat="@android:color/background_light" />
 
-<!--    <Button
-        android:id="@+id/button"
-        android:layout_width="125dp"
-        android:layout_height="62dp"
-        android:layout_marginBottom="32dp"
-        android:background="#00CE1313"
-        android:text="Remove Node"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/imageView_note" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

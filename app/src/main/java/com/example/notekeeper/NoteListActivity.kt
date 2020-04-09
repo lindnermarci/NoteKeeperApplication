@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import kotlinx.android.synthetic.main.activity_note_list.*
 import kotlinx.android.synthetic.main.content_note_list.*
-import kotlinx.android.synthetic.main.item_note_list.*
 
 class NoteListActivity : AppCompatActivity() {
 
@@ -26,7 +25,6 @@ class NoteListActivity : AppCompatActivity() {
             startActivity(activityIntent)
         }
 
-
         listItems.layoutManager = LinearLayoutManager(this)
 
         mAdapter =  NoteRecycleAdapter(this, DataManager.notes)
@@ -35,7 +33,6 @@ class NoteListActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        restart()
         listItems.adapter?.notifyDataSetChanged()
     }
 
@@ -45,19 +42,18 @@ class NoteListActivity : AppCompatActivity() {
         // Associate searchable configuration with the SearchView
         val searchItem = menu.findItem(R.id.action_search)
         val searchView = searchItem.actionView as SearchView
-        searchView.setQueryHint("Search View Hint")
+        searchView.queryHint = "Search for your note"
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextChange(query: String): Boolean {
                 mAdapter!!.filter.filter(query)
-                restart()
+
                 return false
             }
 
             override fun onQueryTextSubmit(query: String): Boolean {
                 mAdapter!!.filter.filter(query)
-                restart()
                  return false
             }
 
@@ -65,12 +61,4 @@ class NoteListActivity : AppCompatActivity() {
 
         return true
     }
-
-    fun restart(){
-        listItems.layoutManager = LinearLayoutManager(this)
-
-        mAdapter =  NoteRecycleAdapter(this, DataManager.notes)
-        listItems.adapter = mAdapter
-    }
-
 }
