@@ -12,12 +12,12 @@ import kotlinx.android.synthetic.main.content_main.*
 import android.app.Activity
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.Bitmap
+import com.google.android.material.snackbar.Snackbar
 import kotlin.random.Random
 
 
 class NoteActivity : AppCompatActivity() {
     private var notePosition = POSITION_NOT_SET
-    var originalNoteIndex = -1
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,9 +40,8 @@ class NoteActivity : AppCompatActivity() {
             displayNote()
         }
         else{
-            DataManager.originalNotes.add(Note())
-            notePosition = DataManager.originalNotes.lastIndex
-            originalNoteIndex = DataManager.originalNotes.lastIndex
+            DataManager.filteredNotes.add(Note())
+            notePosition = DataManager.filteredNotes.lastIndex
         }
 
         button_add_image.setOnClickListener { view ->
@@ -61,18 +60,7 @@ class NoteActivity : AppCompatActivity() {
         }
     }
 
-    private fun displayNote() {
-        val note = DataManager.notes[notePosition]
-        textNoteTitle.setText(note.title)
-        textNoteText.setText(note.text)
-        if(note.image != null){
-            imageView_note.setImageBitmap(note.image)
-        }
 
-
-        val coursePosition = DataManager.priorityOptions.indexOf(note.priority);
-        spinnerPriorities.setSelection(coursePosition)
-    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -106,8 +94,25 @@ class NoteActivity : AppCompatActivity() {
         invalidateOptionsMenu()
     }
 
+    private fun displayNote() {
+        val note = DataManager.filteredNotes[notePosition]
+        textNoteTitle.setText(note.title)
+        textNoteText.setText(note.text)
+        if(note.image != null){
+            imageView_note.setImageBitmap(note.image)
+        }else{
+            imageView_note.setImageResource(0)
+        }
+        val coursePosition = DataManager.priorityOptions.indexOf(note.priority);
+        spinnerPriorities.setSelection(coursePosition)
+    }
+
+    private fun showMessage(message: String) {
+        Snackbar.make(textNoteTitle, message, Snackbar.LENGTH_LONG).show()
+    }
+
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        if(notePosition >= DataManager.notes.lastIndex){
+        if(notePosition >= DataManager.filteredNotes.lastIndex){
             val menuItem = menu?.findItem(R.id.action_next);
             if(menuItem != null){
                 menuItem.icon = getDrawable(R.drawable.ic_block_white_24dp)
@@ -117,40 +122,32 @@ class NoteActivity : AppCompatActivity() {
         return super.onPrepareOptionsMenu(menu)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onPause() {
+        super.onPause()
         saveNote()
     }
 
     private fun saveNote(image: Bitmap? = null) {
-        if(originalNoteIndex == -1){ //modositas
-            val note = DataManager.notes[notePosition]
-            note.title = textNoteTitle.text.toString()
-            note.text = textNoteText.text.toString()
-            note.priority = spinnerPriorities.selectedItem as Priority
-            if(image != null){
-                note.image = image
-            }
-        }else{ //uj elem hozzadas
-            val note = DataManager.originalNotes[originalNoteIndex]
-            val id = Random.nextInt(1, Int.MAX_VALUE)
-            note.id = id
-            note.title = textNoteTitle.text.toString()
-            note.text = textNoteText.text.toString()
-            note.priority = spinnerPriorities.selectedItem as Priority
-
-            var exists = false
-            for (n in DataManager.notes){
-                if(note.id == n.id) exists = true
-            }
-            if(!exists){
-                DataManager.notes.add(note)
-            }
-            if(image != null){
-                note.image = image
-            }
+        val note = DataManager.filteredNotes[notePosition]
+        if(note.id == null){
+            note.id = Random.nextInt()
+        }
+        note.title = textNoteTitle.text.toString()
+        note.text = textNoteText.text.toString()
+        note.priority = spinnerPriorities.selectedItem as Priority
+        if(image != null){
+            note.image = image
+        }else{
+            imageView_note.setImageResource(0)
         }
 
+        var exists = false
+        for (n in DataManager.notes){
+            if(note.id == n.id) exists = true
+        }
+        if(!exists){
+            DataManager.notes.add(note)
+        }
     }
 
 }

@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/button_remove"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -10,62 +9,82 @@
     tools:showIn="@layout/activity_main">
 
 
-    <Spinner
-        android:id="@+id/spinnerPriorities"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <EditText
-        android:id="@+id/textNoteTitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:gravity="start|top"
-        android:hint="@string/note_title"
-        android:inputType="textMultiLine"
-        app:layout_constraintEnd_toEndOf="@+id/spinnerPriorities"
-        app:layout_constraintStart_toStartOf="@+id/spinnerPriorities"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerPriorities" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/textNoteText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:gravity="start|top"
-        android:hint="@string/note_text"
-        android:inputType="textMultiLine"
-        app:layout_constraintEnd_toEndOf="@+id/spinnerPriorities"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/spinnerPriorities"
-        app:layout_constraintTop_toBottomOf="@+id/textNoteTitle" />
+            <Spinner
+                android:id="@+id/spinnerPriorities"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/button_add_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/add_image"
-        app:layout_constraintEnd_toEndOf="@+id/spinnerPriorities"
-        app:layout_constraintStart_toStartOf="@+id/spinnerPriorities"
-        app:layout_constraintTop_toBottomOf="@+id/textNoteText" />
+            <EditText
+                android:id="@+id/textNoteTitle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:gravity="start|top"
+                android:hint="@string/note_title"
+                android:inputType="textMultiLine"
+                app:layout_constraintEnd_toEndOf="@+id/spinnerPriorities"
+                app:layout_constraintStart_toStartOf="@+id/spinnerPriorities"
+                app:layout_constraintTop_toBottomOf="@id/spinnerPriorities" />
 
-    <ImageView
-        android:id="@+id/imageView_note"
-        android:layout_width="346dp"
-        android:layout_height="226dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="@+id/textNoteText"
-        app:layout_constraintStart_toStartOf="@+id/textNoteText"
-        app:layout_constraintTop_toBottomOf="@+id/button_add_image"
-        app:srcCompat="@android:color/background_light" />
+            <EditText
+                android:id="@+id/textNoteText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:gravity="start|top"
+                android:hint="@string/note_text"
+                android:inputType="textMultiLine"
+                app:layout_constraintEnd_toEndOf="@+id/spinnerPriorities"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/spinnerPriorities"
+                app:layout_constraintTop_toBottomOf="@+id/textNoteTitle" />
+
+            <Button
+                android:id="@+id/button_add_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/add_image"
+                app:layout_constraintEnd_toEndOf="@+id/spinnerPriorities"
+                app:layout_constraintStart_toStartOf="@+id/spinnerPriorities"
+                app:layout_constraintTop_toBottomOf="@+id/textNoteText" />
+
+            <ImageView
+                android:id="@+id/imageView_note"
+                android:layout_width="346dp"
+                android:layout_height="247dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="@+id/textNoteText"
+                app:layout_constraintStart_toStartOf="@+id/textNoteText"
+                app:layout_constraintTop_toBottomOf="@+id/button_add_image"
+                app:srcCompat="@android:color/background_light" />
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

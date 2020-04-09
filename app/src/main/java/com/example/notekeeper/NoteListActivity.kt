@@ -27,7 +27,7 @@ class NoteListActivity : AppCompatActivity() {
 
         listItems.layoutManager = LinearLayoutManager(this)
 
-        mAdapter =  NoteRecycleAdapter(this, DataManager.notes)
+        mAdapter =  NoteRecycleAdapter(this, DataManager.filteredNotes)
         listItems.adapter = mAdapter
     }
 

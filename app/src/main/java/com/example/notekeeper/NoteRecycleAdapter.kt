@@ -46,9 +46,9 @@ class NoteRecycleAdapter(private val context: Context, private val notes: List<N
         var notePosition = 0
         init{
             button?.setOnClickListener {
-                val note = DataManager.notes[notePosition]
-                DataManager.notes.removeAt(notePosition)
-                DataManager.originalNotes.remove(note)
+                val note = DataManager.filteredNotes[notePosition]
+                DataManager.filteredNotes.removeAt(notePosition)
+                DataManager.notes.remove(note)
                 notifyDataSetChanged()
 
             }
@@ -66,11 +66,11 @@ class NoteRecycleAdapter(private val context: Context, private val notes: List<N
             override fun performFiltering(charSequence: CharSequence): FilterResults {
                 val charString = charSequence.toString()
                 if (charString.isEmpty()) {
-                    DataManager.notes.clear()
-                    DataManager.notes.addAll(DataManager.originalNotes)
+                    DataManager.filteredNotes.clear()
+                    DataManager.filteredNotes.addAll(DataManager.notes)
                 } else {
                     val filteredList = ArrayList<Note>()
-                    for (row in DataManager.originalNotes) {
+                    for (row in DataManager.notes) {
 
                         // name match condition. this might differ depending on your requirement
                         // here we are looking for name or phone number match
@@ -79,19 +79,19 @@ class NoteRecycleAdapter(private val context: Context, private val notes: List<N
                         }
                     }
 
-                    DataManager.notes.clear()
-                    DataManager.notes.addAll(filteredList)
+                    DataManager.filteredNotes.clear()
+                    DataManager.filteredNotes.addAll(filteredList)
                 }
 
                 val filterResults = FilterResults()
-                filterResults.values = ArrayList<Note>(DataManager.notes)
+                filterResults.values = ArrayList<Note>(DataManager.filteredNotes)
 
                 return filterResults
             }
 
             override fun publishResults(charSequence: CharSequence, filterResults: FilterResults) {
-                DataManager.notes.clear()
-                DataManager.notes.addAll(filterResults.values as ArrayList<Note>)
+                DataManager.filteredNotes.clear()
+                DataManager.filteredNotes.addAll(filterResults.values as ArrayList<Note>)
                 notifyDataSetChanged()
             }
         }
